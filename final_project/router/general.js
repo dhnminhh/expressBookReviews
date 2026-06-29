@@ -72,48 +72,46 @@ public_users.get('/review/:isbn',function (req, res) {
 module.exports.general = public_users;
 
 // ==========================================
-// TASK 11: AXIOS & ASYNC/AWAIT & PROMISES
+// TASK 11-14: AXIOS & ASYNC/AWAIT & PROMISES
 // ==========================================
 const axios = require('axios');
 
-// 1. Lấy danh sách tất cả các sách (Dùng async/await)
-const getAllBooksAsync = async () => {
-    try {
-        const response = await axios.get('http://localhost:5000/');
-        console.log("Task 11 - All Books:", response.data);
-    } catch (error) {
-        console.error("Error fetching all books:", error);
-    }
+// Task 11: Lấy danh sách tất cả các sách (Sử dụng Promise)
+const getBooks = () => {
+    return new Promise((resolve, reject) => {
+        axios.get('http://localhost:5000/')
+            .then(response => resolve(response.data))
+            .catch(error => reject(error));
+    });
 };
 
-// 2. Tìm sách theo ISBN (Dùng Promise callbacks)
-const getBookByIsbnPromise = (isbn) => {
-    axios.get(`http://localhost:5000/isbn/${isbn}`)
-        .then(response => {
-            console.log(`Task 11 - Book with ISBN ${isbn}:`, response.data);
-        })
-        .catch(error => {
-            console.error("Error fetching book by ISBN:", error);
-        });
+// Task 12: Tìm sách theo ISBN (Sử dụng Promise)
+const getBookByISBN = (isbn) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`http://localhost:5000/isbn/${isbn}`)
+            .then(response => resolve(response.data))
+            .catch(error => reject(error));
+    });
 };
 
-// 3. Tìm sách theo Tác giả (Dùng async/await)
-const getBookByAuthorAsync = async (author) => {
+// Task 13: Tìm sách theo Tác giả (Sử dụng async/await)
+const getBookByAuthor = async (author) => {
     try {
         const response = await axios.get(`http://localhost:5000/author/${author}`);
-        console.log(`Task 11 - Books by ${author}:`, response.data);
+        return response.data;
     } catch (error) {
-        console.error("Error fetching books by author:", error);
+        console.error("Lỗi khi lấy thông tin sách theo tác giả:", error);
     }
 };
 
-// 4. Tìm sách theo Tiêu đề (Dùng Promise callbacks)
-const getBookByTitlePromise = (title) => {
-    axios.get(`http://localhost:5000/title/${title}`)
-        .then(response => {
-            console.log(`Task 11 - Books with title ${title}:`, response.data);
-        })
-        .catch(error => {
-            console.error("Error fetching books by title:", error);
+// Task 14: Tìm sách theo Tiêu đề (Sử dụng async/await)
+const getBookByTitle = async (title) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/title/${title}`);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi khi lấy thông tin sách theo tiêu đề:", error);
+    }
+};);
         });
 };
